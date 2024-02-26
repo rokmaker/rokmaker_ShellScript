@@ -28,7 +28,11 @@ for comp_path in "${comp_paths[@]}"; do
     ffmpeg -f image2 -r 24 -start_number 0001 -i "$input_png_file" -c:v libx264 -b:v 20000k -colorspace 1 -color_primaries 1 -color_trc 1 -color_range tv -pix_fmt yuv420p -y "$output_mov_file"
     echo " "
     # Move the processed comp_path folder to the _out folder
-    mv "$comp_path" "./png/_out"
+    echo "Move $comp_path to ./png/_out"
+    rsync -a "$comp_path" "./png/_out"
+    echo "Delete $comp_path"
+    rm -r "$comp_path"
+    # Notify user that the rendering process is complete
     echo "Completed processing $comp_path"
     echo " "
 done
